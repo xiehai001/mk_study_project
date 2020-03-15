@@ -13,7 +13,6 @@ class PublicController {
       width: 150,
       height: 50
     })
-    console.log(newCaptcha);
     ctx.body = {
       code: 200,
       data: newCaptcha.data

@@ -4,32 +4,40 @@
       <form class="layui-form layui-form-pane" action>
         <div class="layui-form-item">
           <label class="layui-form-label">用户名</label>
-          <div class="layui-input-block">
+          <div class="layui-input-inline">
             <input
               type="text"
-              name="title"
+              name="name"
               required
               lay-verify="required"
               placeholder="请输入用户名"
               autocomplete="off"
               class="layui-input"
               v-model.trim="name"
+              v-validate="'required|email'"
             />
+          </div>
+          <div class="error layui-form-mid">
+            {{errors.first('name')}}
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">密码</label>
-          <div class="layui-input-block">
+          <div class="layui-input-inline">
             <input
               type="password"
-              name="title"
+              name="passwrod"
               required
               lay-verify="required"
               placeholder="请输入密码"
               autocomplete="off"
               class="layui-input"
               v-model.trim="password"
+              v-validate="'required|email'"
             />
+          </div>
+           <div class="error layui-form-mid">
+            {{errors.first('passwrod')}}
           </div>
         </div>
         <div class="layui-form-item">
@@ -117,5 +125,8 @@ export default {
   .svg {
     position: relative;
     top: -15px;
+  }
+  .error{
+    color: red;
   }
 </style>
