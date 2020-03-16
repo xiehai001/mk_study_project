@@ -4,7 +4,7 @@
       <form class="layui-form layui-form-pane" action>
         <div class="layui-form-item">
           <label class="layui-form-label">用户名</label>
-          <ValidationProvider rules="required|email" v-slot="{errors}">
+          <ValidationProvider name="用户名" rules="required|email" v-slot="{errors}">
             <div class="layui-input-inline">
                 <input
                   type="text"
@@ -24,34 +24,44 @@
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">密码</label>
-          <div class="layui-input-inline">
-            <input
-              type="password"
-              name="password"
-              required
-              lay-verify="required"
-              placeholder="请输入密码"
-              autocomplete="off"
-              class="layui-input"
-              v-model.trim="password"
-            />
-          </div>
+          <ValidationProvider name="密码" rules="required|min:6" v-slot="{errors}">
+            <div class="layui-input-inline">
+              <input
+                type="password"
+                name="password"
+                required
+                lay-verify="required"
+                placeholder="请输入密码"
+                autocomplete="off"
+                class="layui-input"
+                v-model.trim="password"
+              />
+            </div>
+            <div class="error layui-form-mid">
+              {{errors[0]}}
+            </div>
+          </ValidationProvider>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">验证码</label>
-          <div class="layui-input-inline">
-            <input
-              type="text"
-              name="code"
-              required
-              lay-verify="required"
-              placeholder="请输入验证码"
-              autocomplete="off"
-              class="layui-input"
-              v-model.trim="code"
-            />
-          </div>
-          <div class="layui-form-mid svg" v-html="captchaImg" @click="changeCapcha"></div>
+          <ValidationProvider name="验证码" rules="required|length:4" v-slot="{errors}">
+            <div class="layui-input-inline">
+              <input
+                type="text"
+                name="code"
+                required
+                lay-verify="required"
+                placeholder="请输入验证码"
+                autocomplete="off"
+                class="layui-input"
+                v-model.trim="code"
+              />
+            </div>
+            <div class="layui-form-mid svg" v-html="captchaImg" @click="changeCapcha"></div>
+            <div class="error layui-form-mid">
+              {{errors[0]}}
+            </div>
+          </ValidationProvider>
         </div>
         <button type="button" class="layui-btn">点击登录</button>
         <a class="xh-link" href="">忘记密码</a>
@@ -62,12 +72,13 @@
 <script>
 import axios from 'axios'
 import { ValidationProvider, extend } from 'vee-validate'
-import * as rules from 'vee-validate/dist/rules'
+// import { required, email } from 'vee-validate/dist/rules'
+import * as ruless from 'vee-validate/dist/rules'
 import zh from 'vee-validate/dist/locale/zh_CN'
 
-for (const rule in rules) {
+for (const rule in ruless) {
   extend(rule, {
-    ...rule,
+    ...ruless[rule],
     message: zh.messages[rule]
   })
 }
