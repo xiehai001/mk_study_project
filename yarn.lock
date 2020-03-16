@@ -2558,7 +2558,7 @@ css-declaration-sorter@^4.0.1:
 
 css-loader@^3.4.2:
   version "3.4.2"
-  resolved "https://registry.npm.taobao.org/css-loader/download/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"
+  resolved "http://r.cnpmjs.org/css-loader/download/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"
   integrity sha1-0/2zNYtD8jO3hQHF7XscbaYTMgI=
   dependencies:
     camelcase "^5.3.1"
@@ -5789,13 +5789,6 @@ opener@^1.5.1:
   resolved "https://registry.npm.taobao.org/opener/download/opener-1.5.1.tgz#6d2f0e77f1a0af0032aca716c2c1fbb8e7e8abed"
   integrity sha1-bS8Od/GgrwAyrKcWwsH7uOfoq+0=
 
-opentype.js@^0.7.3:
-  version "0.7.3"
-  resolved "http://r.cnpmjs.org/opentype.js/download/opentype.js-0.7.3.tgz#40fb8ce18bfd60e74448efdfe442834098397aab"
-  integrity sha1-QPuM4Yv9YOdESO/f5EKDQJg5eqs=
-  dependencies:
-    tiny-inflate "^1.0.2"
-
 opn@^5.5.0:
   version "5.5.0"
   resolved "https://registry.npm.taobao.org/opn/download/opn-5.5.0.tgz#fc7164fab56d235904c51c3b27da6758ca3b9bfc"
@@ -7705,13 +7698,6 @@ supports-color@^7.0.0, supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-svg-captcha@^1.4.0:
-  version "1.4.0"
-  resolved "http://r.cnpmjs.org/svg-captcha/download/svg-captcha-1.4.0.tgz#32ead3c6463936c218bb3bc9ed04fea4eeffe492"
-  integrity sha1-MurTxkY5NsIYuzvJ7QT+pO7/5JI=
-  dependencies:
-    opentype.js "^0.7.3"
-
 svg-tags@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/svg-tags/download/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
@@ -7852,11 +7838,6 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.npm.taobao.org/timsort/download/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
-
-tiny-inflate@^1.0.2:
-  version "1.0.3"
-  resolved "http://r.cnpmjs.org/tiny-inflate/download/tiny-inflate-1.0.3.tgz#122715494913a1805166aaf7c93467933eea26c4"
-  integrity sha1-EicVSUkToYBRZqr3yTRnkz7qJsQ=
 
 tmp@^0.0.33:
   version "0.0.33"
