@@ -4,22 +4,23 @@
       <form class="layui-form layui-form-pane" action>
         <div class="layui-form-item">
           <label class="layui-form-label">用户名</label>
-          <div class="layui-input-inline">
-            <input
-              type="text"
-              name="name"
-              required
-              lay-verify="required"
-              placeholder="请输入用户名"
-              autocomplete="off"
-              class="layui-input"
-              v-model.trim="name"
-              v-validate="'required|email'"
-            />
-          </div>
-          <div class="error layui-form-mid">
-            {{errors.first('name')}}
-          </div>
+          <ValidationProvider rules="required|email" v-slot="{errors}">
+            <div class="layui-input-inline">
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  lay-verify="required"
+                  placeholder="请输入用户名"
+                  autocomplete="off"
+                  class="layui-input"
+                  v-model.trim="name"
+                />
+            </div>
+            <div class="error layui-form-mid">
+             {{errors[0]}}
+            </div>
+          </ValidationProvider>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">密码</label>
@@ -33,11 +34,7 @@
               autocomplete="off"
               class="layui-input"
               v-model.trim="password"
-              v-validate="'required|min:6'"
             />
-          </div>
-           <div class="error layui-form-mid">
-            {{errors.first('password')}}
           </div>
         </div>
         <div class="layui-form-item">
@@ -52,13 +49,9 @@
               autocomplete="off"
               class="layui-input"
               v-model.trim="code"
-              v-validate="'required|length:4'"
             />
           </div>
           <div class="layui-form-mid svg" v-html="captchaImg" @click="changeCapcha"></div>
-          <div class="error layui-form-mid">
-            {{errors.first('code')}}
-          </div>
         </div>
         <button type="button" class="layui-btn">点击登录</button>
         <a class="xh-link" href="">忘记密码</a>
@@ -68,8 +61,21 @@
 </template>
 <script>
 import axios from 'axios'
+import { ValidationProvider, extend } from 'vee-validate'
+import * as rules from 'vee-validate/dist/rules'
+import zh from 'vee-validate/dist/locale/zh_CN'
+
+for (const rule in rules) {
+  extend(rule, {
+    ...rule,
+    message: zh.messages[rule]
+  })
+}
 export default {
   name: 'app',
+  components: {
+    ValidationProvider
+  },
   data () {
     return {
       captchaImg: null,
