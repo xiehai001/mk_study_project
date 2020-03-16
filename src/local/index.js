@@ -5,8 +5,8 @@ const dictionary = {
     messages: {
       required: field => '请输入' + field,
       email: () => '请输入正确的邮箱格式',
-      min: () => '不符合最小长度',
-      length: field => field + '长度要求4'
+      min: (field) => field + '不符合最小长度',
+      length: field => field + '不符合长度要求'
     },
     attributes: {
       email: '邮箱',

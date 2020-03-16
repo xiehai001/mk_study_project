@@ -26,18 +26,18 @@
           <div class="layui-input-inline">
             <input
               type="password"
-              name="passwrod"
+              name="password"
               required
               lay-verify="required"
               placeholder="请输入密码"
               autocomplete="off"
               class="layui-input"
               v-model.trim="password"
-              v-validate="'required|email'"
+              v-validate="'required|min:6'"
             />
           </div>
            <div class="error layui-form-mid">
-            {{errors.first('passwrod')}}
+            {{errors.first('password')}}
           </div>
         </div>
         <div class="layui-form-item">
@@ -45,16 +45,20 @@
           <div class="layui-input-inline">
             <input
               type="text"
-              name="title"
+              name="code"
               required
               lay-verify="required"
               placeholder="请输入验证码"
               autocomplete="off"
               class="layui-input"
               v-model.trim="code"
+              v-validate="'required|length:4'"
             />
           </div>
           <div class="layui-form-mid svg" v-html="captchaImg" @click="changeCapcha"></div>
+          <div class="error layui-form-mid">
+            {{errors.first('code')}}
+          </div>
         </div>
         <button type="button" class="layui-btn">点击登录</button>
         <a class="xh-link" href="">忘记密码</a>
