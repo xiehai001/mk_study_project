@@ -11,42 +11,67 @@
             <div class="layui-form layui-form-pane">
               <form method="post">
                 <div class="layui-form-item">
-                  <label for="L_email" class="layui-form-label">邮箱</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" class="layui-input">
-                  </div>
-                  <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+                  <ValidationProvider name="邮箱" rules="required|email" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label class="layui-form-label">邮箱</label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="username" v-model="username" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+                    </div>
+                    <div class="layui-form-mid"><span style="color: #c00;">{{errors[0]}}</span></div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <label for="L_username" class="layui-form-label">昵称</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off" class="layui-input">
-                  </div>
+                  <ValidationProvider name="昵称" rules="required|min:6" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label class="layui-form-label">昵称</label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="nickname" v-model="nickname" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-mid"><span style="color: #c00;">{{errors[0]}}</span></div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <label for="L_pass" class="layui-form-label">密码</label>
-                  <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
-                  </div>
-                  <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+                  <ValidationProvider name="密码" rules="required|min:6|max:16" vid="password" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label  class="layui-form-label">密码</label>
+                      <div class="layui-input-inline">
+                        <input type="password"  name="password" v-model="password"  autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+                    </div>
+                    <div class="layui-form-mid"><span style="color: #c00;">{{errors[0]}}</span></div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <label for="L_repass" class="layui-form-label">确认密码</label>
-                  <div class="layui-input-inline">
-                    <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
-                  </div>
+                  <ValidationProvider name="确认密码" rules="confirmed:password" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label  class="layui-form-label">确认密码</label>
+                      <div class="layui-input-inline">
+                        <input type="password" name="repass" v-model="repass" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-mid"><span style="color: #c00;">{{errors[0]}}</span></div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <label for="L_vercode" class="layui-form-label">人类验证</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_vercode" name="vercode" required lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
-                  </div>
-                  <div class="layui-form-mid">
-                    <span style="color: #c00;">222</span>
-                  </div>
+                  <ValidationProvider name="验证码" rules="required|length:4" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label class="layui-form-label">验证码</label>
+                      <div class="layui-input-inline">
+                        <input type="text"  name="code" placeholder="验证码" v-model="code" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid">
+                        <span   class="svg-code" v-html="svg" @click="_getCode"></span>
+                      </div>
+                    </div>
+                    <div class="layui-form-mid"><span style="color: #c00;">{{errors[0]}}</span></div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <button class="layui-btn" lay-filter="*" lay-submit>立即注册</button>
+                  <button class="layui-btn">立即注册</button>
                 </div>
                 <div class="layui-form-item fly-form-app">
                   <span>或者直接使用社交账号快捷注册</span>
@@ -59,15 +84,49 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 <script>
+import { ValidationProvider, extend } from 'vee-validate'
+import * as Rules from 'vee-validate/dist/rules'
+import { messages } from 'vee-validate/dist/locale/zh_CN'
+import { getCode } from '../api/login'
+Object.keys(Rules).forEach(rule => {
+  extend(rule, { ...Rules[rule], message: messages[rule] })
+})
 export default {
-  name: 'reg'
+  name: 'reg',
+  components: {
+    ValidationProvider
+  },
+  data () {
+    return {
+      username: '',
+      password: '',
+      code: '',
+      svg: '',
+      repass: '',
+      nickname: ''
+    }
+  },
+  mounted () {
+    this._getCode()
+  },
+  methods: {
+    _getCode () {
+      getCode().then(res => {
+        if (res.code === 200) {
+          this.svg = res.data
+        }
+      })
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  .svg-code{
+    position: relative;
+    top: -8px;
+  }
 </style>

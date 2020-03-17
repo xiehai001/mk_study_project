@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  name: 's-footer'
+  name: 'Footer'
 }
 </script>
 

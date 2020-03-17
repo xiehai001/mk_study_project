@@ -50,22 +50,36 @@
             <div class="layui-form layui-form-pane">
               <form method="post">
                 <div class="layui-form-item">
-                  <label for="L_email" class="layui-form-label">邮箱</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="email" required lay-verify="required" autocomplete="off" class="layui-input">
-                  </div>
+                  <ValidationProvider name="邮箱" rules="required|email" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label  class="layui-form-label">邮箱</label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="email" v-model="email" placeholder="请输入注册邮箱" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-mid">
+                      <span style="color: #c00;">{{errors[0]}}</span>
+                    </div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <label for="L_vercode" class="layui-form-label">人类验证</label>
-                  <div class="layui-input-inline">
-                    <input type="text" id="L_vercode" name="vercode" required lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
-                  </div>
-                  <div class="layui-form-mid">
-                    <span style="color: #c00;">22222</span>
-                  </div>
+                  <ValidationProvider name="验证码" rules="required|length:4" v-slot="{errors}">
+                    <div class="layui-row">
+                      <label class="layui-form-label">验证码</label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="code" v-model="code" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid">
+                        <span   class="svg-code" v-html="svg" @click="_getCode"></span>
+                      </div>
+                    </div>
+                    <div class="layui-form-mid">
+                      <span style="color: #c00;">{{errors[0]}}</span>
+                    </div>
+                  </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <button class="layui-btn" alert="1" lay-filter="*" lay-submit>提交</button>
+                  <button class="layui-btn">提交</button>
                 </div>
               </form>
             </div>
@@ -78,11 +92,43 @@
 </template>
 
 <script>
+import { ValidationProvider, extend } from 'vee-validate'
+import * as Rules from 'vee-validate/dist/rules'
+import { messages } from 'vee-validate/dist/locale/zh_CN'
+import { getCode } from '../api/login'
+Object.keys(Rules).forEach(rule => {
+  extend(rule, { ...Rules[rule], message: messages[rule] })
+})
 export default {
-  name: 'forget'
+  name: 'forget',
+  components: {
+    ValidationProvider
+  },
+  data () {
+    return {
+      svg: '',
+      code: '',
+      email: ''
+    }
+  },
+  mounted () {
+    this._getCode()
+  },
+  methods: {
+    _getCode () {
+      getCode().then(res => {
+        if (res.code === 200) {
+          this.svg = res.data
+        }
+      })
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  .svg-code{
+    position: relative;
+    top: -8px;
+  }
 </style>
