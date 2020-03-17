@@ -54,7 +54,7 @@
                     <div class="layui-row">
                       <label  class="layui-form-label">邮箱</label>
                       <div class="layui-input-inline">
-                        <input type="text" name="email" v-model="email" placeholder="请输入注册邮箱" autocomplete="off" class="layui-input">
+                        <input type="text" name="username" v-model="username" placeholder="请输入注册邮箱" autocomplete="off" class="layui-input">
                       </div>
                     </div>
                     <div class="layui-form-mid">
@@ -79,11 +79,10 @@
                   </ValidationProvider>
                 </div>
                 <div class="layui-form-item">
-                  <button class="layui-btn">提交</button>
+                  <button type="button" class="layui-btn" @click="submit()">提交</button>
                 </div>
               </form>
             </div>
-
           </div>
         </div>
       </div>
@@ -95,7 +94,7 @@
 import { ValidationProvider, extend } from 'vee-validate'
 import * as Rules from 'vee-validate/dist/rules'
 import { messages } from 'vee-validate/dist/locale/zh_CN'
-import { getCode } from '../api/login'
+import { getCode, forget } from '../api/login'
 Object.keys(Rules).forEach(rule => {
   extend(rule, { ...Rules[rule], message: messages[rule] })
 })
@@ -108,7 +107,7 @@ export default {
     return {
       svg: '',
       code: '',
-      email: ''
+      username: ''
     }
   },
   mounted () {
@@ -119,6 +118,13 @@ export default {
       getCode().then(res => {
         if (res.code === 200) {
           this.svg = res.data
+        }
+      })
+    },
+    submit () {
+      forget({ username: this.username, code: this.code }).then(res => {
+        if (res.code === 200) {
+          alert('邮件发送成功')
         }
       })
     }
